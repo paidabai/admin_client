@@ -1,13 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class Category extends Component {
-    render() {
-        return (
-            <div>
-                Category
-            </div>
-        );
-    }
+function Category(props) {
+    return (
+        <div>
+            Category
+        </div>
+    );
 }
 
 export default Category;

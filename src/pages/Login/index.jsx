@@ -1,19 +1,19 @@
-import React, {Component} from 'react';
-import logo from './images/login-logo.png'
-import {UserOutlined, LockOutlined} from '@ant-design/icons';
-import {Button, Form, Input, message} from "antd";
+import React from 'react';
 import {reqLogin} from "../../api";
+import {Button, Form, Input, message} from "antd";
+import logo from "./images/login-logo.png";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import './index.less'
 
-class Login extends Component {
+function Login(props) {
 
-     onFinish = (values) => {
+    const onFinish = (values) => {
         const {username, password} = values
         reqLogin(username, password).then((response) => {
             const result = response.data
             if (result.status === 0) {
                 message.success('登录成功')
-                this.props.history.replace('/home')
+                /*跳转到home页面*/
             } else {
                 message.error(result.msg)
             }
@@ -23,11 +23,10 @@ class Login extends Component {
         })
     }
 
-     onFinishFailed = (errorInfo) => {
+    const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
 
-    render() {
         return (
             <div className="login">
                 <header className="login-header">
@@ -41,8 +40,8 @@ class Login extends Component {
                         labelCol={{span: 8}}
                         wrapperCol={{span: 12}}
                         initialValues={{remember: true}}
-                        onFinish={this.onFinish}
-                        onFinishFailed={this.onFinishFailed}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
                         scrollToFirstError={true}
                         autoComplete="off"
                     >
@@ -78,7 +77,7 @@ class Login extends Component {
                 </section>
             </div>
         );
-    }
+
 }
 
 export default Login;

@@ -1,18 +1,14 @@
-import React, {Component} from 'react';
-import {Route, Routes} from "react-router-dom";
-import Login from "./pages/Login";
-import Admin from "./pages/Admin";
+import {useRoutes} from "react-router-dom";
+import indexRouter from "./routes";
 import 'antd/dist/antd.less';
 
-class App extends Component {
-    render() {
-        return (
-                <Routes>
-                    <Route path="/login" element={<Login />}/>
-                    <Route path="/" element={<Admin />}></Route>
-                </Routes>
-        );
-    }
+function App(props) {
+    const elementRoute = useRoutes(indexRouter)
+    return (
+        <div style={{height:'100%'}}>
+            {elementRoute}
+        </div>
+    );
 }
 
 export default App;

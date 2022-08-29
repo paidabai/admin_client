@@ -1,13 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class Line extends Component {
-    render() {
-        return (
-            <div>
-                Line
-            </div>
-        );
-    }
+function Line(props) {
+    return (
+        <div>
+            Line
+        </div>
+    );
 }
 
 export default Line;

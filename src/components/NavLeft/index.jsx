@@ -14,6 +14,7 @@ import {
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import './index.less'
+import {NavLink} from "react-router-dom";
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -26,17 +27,17 @@ function getItem(label, key, icon, children, type) {
 }
 
 const items = [
-    getItem('首页', '1', <HomeOutlined />),
+    getItem(<NavLink to='home'>首页</NavLink>, '1', <HomeOutlined />),
     getItem('商品', 'sub1', <ShoppingOutlined />, [
-        getItem('品类管理', '2', <MenuUnfoldOutlined />),
-        getItem('商品管理', '3', <TagsOutlined />),
+        getItem(<NavLink to='commodity/category'>品类管理</NavLink>, '2', <MenuUnfoldOutlined />),
+        getItem(<NavLink to='commodity/product'>商品管理</NavLink>, '3', <TagsOutlined />),
     ]),
-    getItem('用户管理', '4', <UserOutlined />),
-    getItem('角色管理', '5', <SolutionOutlined />),
+    getItem(<NavLink to='user'>用户管理</NavLink>, '4', <UserOutlined />),
+    getItem(<NavLink to='role'>角色管理</NavLink>, '5', <SolutionOutlined />),
     getItem('图形图表', 'sub2', <DotChartOutlined />, [
-        getItem('柱形图', '6', <BarChartOutlined />),
-        getItem('折线图', '7', <LineChartOutlined />),
-        getItem('饼图', '8', <PieChartOutlined />)
+        getItem(<NavLink to='charts/bar'>柱形图</NavLink>, '6', <BarChartOutlined />),
+        getItem(<NavLink to='charts/line'>折线图</NavLink>, '7', <LineChartOutlined />),
+        getItem(<NavLink to='charts/pie'>饼图</NavLink>, '8', <PieChartOutlined />)
     ]),
 ];
 

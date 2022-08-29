@@ -1,14 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './index.less'
 
-class Header extends Component {
-    render() {
-        return (
-            <div className='header'>
+function Header(props) {
+    return (
+        <div className='header'>
 
-            </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default Header;

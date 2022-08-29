@@ -1,13 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class Pie extends Component {
-    render() {
-        return (
-            <div>
-                pie
-            </div>
-        );
-    }
+function pie(props) {
+    return (
+        <div>
+            pie
+        </div>
+    );
 }
 
-export default Pie;
+export default pie;
