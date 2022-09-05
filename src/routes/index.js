@@ -53,13 +53,13 @@ const indexRouter = [
             },{
                 path: '/',
                 //重定向
-                element: <Navigate to='/home' />
+                element: <Navigate to='/login' />
             }
         ]
     },
     {
         path: '/',
-        element: <Navigate to='/login' />
+        element: <Navigate to='/home' />
     }
 ]
 

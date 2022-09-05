@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {reqLogin} from "../../api";
 import {Button, Form, Input, message} from "antd";
 import logo from "./images/login-logo.png";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {useNavigate} from "react-router-dom";
+import memoryUtils from "../../utils/memoryUtils";
+import storageUtils from "../../utils/storageUtils";
 import './index.less'
 
 function Login(props) {
+
+    const navigate = useNavigate()
+    const user = memoryUtils.user
 
     const onFinish = (values) => {
         const {username, password} = values
@@ -13,7 +19,12 @@ function Login(props) {
             const result = response.data
             if (result.status === 0) {
                 message.success('登录成功')
+                console.log(result)
+                const user = result.data
+                memoryUtils.user = user //user存在内存中
+                storageUtils.saveUser(user) //user存在local中
                 /*跳转到home页面*/
+                navigate('/home')
             } else {
                 message.error(result.msg)
             }
@@ -26,6 +37,12 @@ function Login(props) {
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+
+    useEffect(() => {
+        if (user && user._id){
+            navigate("/home")
+        }
+    },[navigate,user])
 
         return (
             <div className="login">

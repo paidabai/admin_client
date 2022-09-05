@@ -2,5 +2,45 @@
     width: 100%;
     height: 80px;
     background-color: white;
-
+        .header-top{
+            width: 100%;
+            height: 40px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            border-bottom: 2px solid rgb(29,165,122);
+                .btn {
+                    margin-right: 20px;
+                }
+                .admin {
+                    margin-right: 15px;
+                    font-size: 14px;
+                }
+        }
+        .header-bottom {
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+                .header-bottom-left {
+                    width: 16%;
+                    font-size: 20px;
+                    text-align: center;
+                    &::after{
+                        content: "";
+                        border-width: 20px;
+                        border-style: dashed dashed dashed solid;
+                        border-color: white transparent transparent transparent;
+                        position: absolute;
+                        top: 38px;
+                        left: 140px;
+                    }
+                }
+                .header-bottom-right {
+                    span {
+                        margin-right: 20px;
+                    }
+                }
+        }
 }

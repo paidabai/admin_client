@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import logo from './images/login-logo.png'
 import {
     BarChartOutlined,
@@ -14,7 +14,7 @@ import {
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import './index.less'
-import {NavLink} from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -27,44 +27,45 @@ function getItem(label, key, icon, children, type) {
 }
 
 const items = [
-    getItem(<NavLink to='home'>首页</NavLink>, '1', <HomeOutlined />),
+    getItem(<NavLink to='home'>首页</NavLink>, '/home', <HomeOutlined />),
     getItem('商品', 'sub1', <ShoppingOutlined />, [
-        getItem(<NavLink to='commodity/category'>品类管理</NavLink>, '2', <MenuUnfoldOutlined />),
-        getItem(<NavLink to='commodity/product'>商品管理</NavLink>, '3', <TagsOutlined />),
+        getItem(<NavLink to='commodity/category'>品类管理</NavLink>, '/commodity/category', <MenuUnfoldOutlined />),
+        getItem(<NavLink to='commodity/product'>商品管理</NavLink>, '/commodity/product', <TagsOutlined />),
     ]),
-    getItem(<NavLink to='user'>用户管理</NavLink>, '4', <UserOutlined />),
-    getItem(<NavLink to='role'>角色管理</NavLink>, '5', <SolutionOutlined />),
+    getItem(<NavLink to='user'>用户管理</NavLink>, '/user', <UserOutlined />),
+    getItem(<NavLink to='role'>角色管理</NavLink>, '/role', <SolutionOutlined />),
     getItem('图形图表', 'sub2', <DotChartOutlined />, [
-        getItem(<NavLink to='charts/bar'>柱形图</NavLink>, '6', <BarChartOutlined />),
-        getItem(<NavLink to='charts/line'>折线图</NavLink>, '7', <LineChartOutlined />),
-        getItem(<NavLink to='charts/pie'>饼图</NavLink>, '8', <PieChartOutlined />)
+        getItem(<NavLink to='charts/bar'>柱形图</NavLink>, '/charts/bar', <BarChartOutlined />),
+        getItem(<NavLink to='charts/line'>折线图</NavLink>, '/charts/line', <LineChartOutlined />),
+        getItem(<NavLink to='charts/pie'>饼图</NavLink>, '/charts/pie', <PieChartOutlined />)
     ]),
 ];
 
 
+function NavLeft(props) {
 
-class NavLeft extends Component {
-    render() {
-        return (
-            <div className='nav-left'>
-                <div className='nav-left-header'>
-                    <img src={logo} alt="logo"/>
-                    <h2>管理后台</h2>
-                </div>
+    const location = useLocation()
+    const path = location.pathname
+
+    return (
+        <div className='nav-left'>
+            <div className='nav-left-header'>
+                <img src={logo} alt="logo"/>
+                <h2>管理后台</h2>
+            </div>
+            <div>
                 <div>
-                    <div>
-                        <Menu
-                            defaultSelectedKeys={['1']}
-                            defaultOpenKeys={['sub1']}
-                            mode="inline"
-                            theme="dark"
-                            items={items}
-                        />
-                    </div>
+                    <Menu
+                        selectedKeys = {[`${path}`]}
+                        defaultOpenKeys = {['sub1','sub2']}
+                        mode="inline"
+                        theme="dark"
+                        items={items}
+                    />
                 </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 export default NavLeft;
