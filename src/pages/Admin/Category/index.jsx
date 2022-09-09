@@ -3,21 +3,26 @@ import {
     Button,
     Card,
     Modal,
-    Select,
-    Form,
-    Input,
     Table,
-    message
+    message, Form,
 } from "antd";
 import {ArrowRightOutlined, PlusOutlined} from "@ant-design/icons";
-import {reqCategory} from "../../../api";
+import {reqAddCategory, reqCategory, reqUpDateCategory} from "../../../api";
+import AddForm from "./AddForm";
+import ModifyForm from "./ModifyForm";
 
 
 function Category(props) {
-
-    const [isModalVisible, setIsModalVisible] = useState(false)
+    //添加
+    const [isAddVisible, setIsAddVisible] = useState(false)
+    //修改
+    const [isModifyVisible, setIsModifyVisible] = useState(false)
     //一级分类列表
     const [category, setCategory] = useState([])
+    //一级分类列表的名称
+    const [categoryName, setCategoryName] = useState('')
+    //一级分类列表的id
+    const [categoryId, setCategoryId] = useState()
     //二级分类列表
     const [subCategory, setSubCategory] = useState([])
     //需要展示列表的父分类id
@@ -26,6 +31,8 @@ function Category(props) {
     const [parentName, setParentName] = useState('')
     //加载
     const [loading, setLoading] = useState(true)
+    let [modifyForm] = Form.useForm()
+    let [addForm] = Form.useForm()
 
     const columns = [
         {
@@ -38,7 +45,7 @@ function Category(props) {
             dataIndex: '',
             render: (category) => (
                 <span>
-                    <Button type="link">修改分类</Button>
+                    <Button type="link" onClick={() => {showModify(category)}}>修改分类</Button>
                     {parentId === '0' ? <Button type="link" onClick={() => {showSubCategory(category)}}>查看子分类</Button> : ''}
                 </span>
             )
@@ -70,6 +77,7 @@ function Category(props) {
     const showSubCategory = (category) => {
         setParentId(category._id)
         setParentName(category.name)
+        setCategoryName(category.name)
     }
 
     // 返回一级列表
@@ -81,18 +89,56 @@ function Category(props) {
 
     useEffect(() => {
         getCategory()
-    },[getCategory,parentId])
+    },[getCategory, parentId])
 
-    const showModal = () => {
-        setIsModalVisible(true);
+    const showModify = (category) => {
+        setCategoryName(category.name)
+        setCategoryId(category._id)
+        setIsModifyVisible(true);
     };
 
-    const handleOk = () => {
-
+    // 更新分类
+    const modifyOk = () => {
+        const categoryName = modifyForm.getFieldsValue().categoryName
+        reqUpDateCategory({categoryId, categoryName}).then((response) => {
+            if (response.data.status === 0){
+                getCategory()
+            }else {
+                message.error('修改失败')
+            }
+        }).catch((error) => {
+            message.error("请求出错",error)
+        })
+        setIsModifyVisible(false);
     }
 
-    const handleCancel = () => {
-        setIsModalVisible(false);
+    const modifyCancel = () => {
+        setIsModifyVisible(false);
+    }
+
+    // 添加页面
+    const showAdd = () => {
+        setIsAddVisible(true);
+    };
+
+    // 添加分类
+    const addOk = () => {
+        const categoryName = addForm.getFieldsValue().categoryName
+        reqAddCategory({parentId, categoryName}).then((response) => {
+            if (response.data.status === 0){
+                getCategory()
+                message.success('添加成功')
+            }else {
+                message.error('添加失败')
+            }
+        }).catch((error) => {
+            message.error('请求出错',error)
+        })
+        setIsAddVisible(false);
+    }
+
+    const addCancel = () => {
+        setIsAddVisible(false);
     }
 
     // 表格头部文字
@@ -106,23 +152,23 @@ function Category(props) {
     return (
         <div>
             <Card title={tableTitle} extra={
-                <Button className='btn' type="primary" size='large' onClick={showModal}><PlusOutlined />添加</Button>}
+                <Button className='btn' type="primary" size='large' onClick={showAdd}><PlusOutlined />添加</Button>}
                 style={{ width: '100%' }
             }>
-                <Modal title="添加分类" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} keyboard={true} cancelText='取消' okText='添加'>
-                    <Form.Item>
-                        <p>所属分类:</p>
-                        <Select>
-                            <Select.Option value="demo">Demo</Select.Option>
-                        </Select>
-                        <br/>
-                        <br/>
-                        <p>分类名称:</p>
-                        <Input />
-                    </Form.Item>
+                <Table bordered columns={columns} dataSource={parentId === '0' ? category : subCategory} loading={loading} rowKey='_id' />
+                <Modal title="修改分类" visible={isModifyVisible} onOk={modifyOk} onCancel={modifyCancel} keyboard={true} cancelText='取消' okText='修改' destroyOnClose={true}>
+                    <ModifyForm
+                        categoryName={categoryName}
+                        setModifyForm={(form) => {modifyForm = form}}
+                    />
                 </Modal>
-
-                <Table bordered columns={columns} dataSource={parentId === '0' ? category : subCategory} loading={loading} rowKey='_id'/>
+                <Modal title="添加分类" visible={isAddVisible} onOk={addOk} onCancel={addCancel} keyboard={true} cancelText='取消' okText='添加' destroyOnClose={true}>
+                    <AddForm
+                        categoryName={categoryName}
+                        parentId={parentId}
+                        setAddForm={(form) => {addForm = form}}
+                    />
+                </Modal>
             </Card>
         </div>
     );

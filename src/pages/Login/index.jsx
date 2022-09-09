@@ -65,7 +65,7 @@ function Login(props) {
                         <Form.Item wrapperCol={{offset: 2, span: 20}}
                                    name="username"
                                    rules={[
-                                       {required: true, message: '请输入密码'},
+                                       {required: true, message: '请输入账号'},
                                        {min: 3, message: '用户名至少3位'},
                                        {max: 8, message: '用户名最长8位'},
                                        {
