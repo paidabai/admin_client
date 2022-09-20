@@ -14,9 +14,7 @@ function Admin(props) {
     const navigate = useNavigate()
     useEffect(() => {
         if (!user || !user._id){
-
             navigate("/login");
-
             ((placement,duration) => {
                 notification.info({
                     message: `非法访问`,

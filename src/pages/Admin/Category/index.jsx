@@ -100,16 +100,21 @@ function Category(props) {
     // 更新分类
     const modifyOk = () => {
         const categoryName = modifyForm.getFieldsValue().categoryName
-        reqUpDateCategory({categoryId, categoryName}).then((response) => {
-            if (response.data.status === 0){
-                getCategory()
-            }else {
-                message.error('修改失败')
+        modifyForm.validateFields().then(() => {
+            reqUpDateCategory({categoryId, categoryName}).then((response) => {
+                if (response.data.status === 0){
+                    getCategory()
+                }else {
+                    message.error('修改失败')
+                }
+            }).catch((error) => {
+                message.error("请求出错",error)
+            })
+            setIsModifyVisible(false);
+        }).catch(() => {
+
             }
-        }).catch((error) => {
-            message.error("请求出错",error)
-        })
-        setIsModifyVisible(false);
+        )
     }
 
     const modifyCancel = () => {
@@ -124,17 +129,21 @@ function Category(props) {
     // 添加分类
     const addOk = () => {
         const categoryName = addForm.getFieldsValue().categoryName
-        reqAddCategory({parentId, categoryName}).then((response) => {
-            if (response.data.status === 0){
-                getCategory()
-                message.success('添加成功')
-            }else {
-                message.error('添加失败')
-            }
-        }).catch((error) => {
-            message.error('请求出错',error)
+        addForm.validateFields().then(() => {
+            reqAddCategory({parentId, categoryName}).then((response) => {
+                if (response.data.status === 0){
+                    getCategory()
+                    message.success('添加成功')
+                }else {
+                    message.error('添加失败')
+                }
+            }).catch((error) => {
+                message.error('请求出错',error)
+            })
+            setIsAddVisible(false);
+        }).catch(() => {
+
         })
-        setIsAddVisible(false);
     }
 
     const addCancel = () => {
