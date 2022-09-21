@@ -46,7 +46,9 @@ function NavLeft(props) {
 
     const location = useLocation()
     const path = location.pathname
-    const newPath = path.substring(2,path.indexOf('/'))
+    let index = path.indexOf('/')
+    index = path.indexOf('/',index + 1)
+    const newPath = path.substring(0,index)
     console.log(newPath)
 
     return (
@@ -58,7 +60,7 @@ function NavLeft(props) {
             <div>
                 <div>
                     <Menu
-                        selectedKeys = {[`${path}`]}
+                        selectedKeys = {[`${newPath}`]}
                         defaultOpenKeys = {['sub1','sub2']}
                         mode="inline"
                         theme="dark"
