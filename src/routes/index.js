@@ -2,6 +2,7 @@ import Login from "../pages/Login";
 import Admin from "../pages/Admin";
 import {Navigate} from "react-router-dom";
 import Home from "../pages/Admin/Home";
+import ProductHome from "../pages/Admin/Product/ProductHome"
 import Pie from "../pages/Admin/Pie";
 import Line from "../pages/Admin/Line";
 import Bar from "../pages/Admin/Bar";
@@ -9,6 +10,9 @@ import User from "../pages/Admin/User";
 import Role from "../pages/Admin/Role";
 import Product from "../pages/Admin/Product";
 import Category from "../pages/Admin/Category";
+import ProductDetail from "../pages/Admin/Product/ProductDetail";
+import AddUpdate from "../pages/Admin/Product/AddUpdate";
+
 
 const indexRouter = [
     {
@@ -16,7 +20,7 @@ const indexRouter = [
         element: <Login />
     },
     {
-        path: '/',
+        path: '',
         element: <Admin />,
         children: [
             {
@@ -24,12 +28,30 @@ const indexRouter = [
                 element: <Home />
             },
             {
-                path: 'commodity/category',
+                path: 'category',
                 element: <Category />
             },
             {
-                path: 'commodity/product',
-                element: <Product />
+                path: 'product',
+                element: <Product />,
+                children:[
+                    {
+                        path: '',
+                        element: <ProductHome />
+                    },
+                    {
+                        path: 'detail',
+                        element: <ProductDetail />
+                    },
+                    {
+                        path: 'update',
+                        element: <AddUpdate />
+                    },
+                    {
+                        path: '/product/*',
+                        element: <Navigate to='' />
+                    }
+                ]
             },
             {
                 path: 'user',
@@ -40,26 +62,26 @@ const indexRouter = [
                 element: <Role />
             },
             {
-                path: 'charts/bar',
+                path: 'bar',
                 element: <Bar />
             },
             {
-                path: 'charts/line',
+                path: 'line',
                 element: <Line />
             },
             {
-                path: 'charts/pie',
+                path: 'pie',
                 element: <Pie />
-            },{
-                path: '/',
-                //重定向
-                element: <Navigate to='/login' />
+            },
+            {
+                path: '/*',
+                element: <Navigate to='/home' />
             }
         ]
     },
     {
-        path: '/',
-        element: <Navigate to='/home' />
+        path: '/*',
+        element: <Navigate to='/login'/>
     }
 ]
 

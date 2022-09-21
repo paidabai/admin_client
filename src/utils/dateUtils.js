@@ -12,5 +12,4 @@ export function formatDate(time) {
         date.getMinutes() +
         ':' +
         date.getSeconds()
-
 }

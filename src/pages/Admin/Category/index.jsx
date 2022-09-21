@@ -4,12 +4,14 @@ import {
     Card,
     Modal,
     Table,
-    message, Form,
+    message,
+    Form
 } from "antd";
 import {ArrowRightOutlined, PlusOutlined} from "@ant-design/icons";
-import {reqAddCategory, reqCategory, reqUpDateCategory} from "../../../api";
+import {reqAddCategory, reqCategory, reqUpDateCategory, reqDeleteCategory} from "../../../api";
 import AddForm from "./AddForm";
 import ModifyForm from "./ModifyForm";
+import DeleteForm from "./DeleteForm";
 
 
 function Category(props) {
@@ -17,9 +19,11 @@ function Category(props) {
     const [isAddVisible, setIsAddVisible] = useState(false)
     //修改
     const [isModifyVisible, setIsModifyVisible] = useState(false)
-    //一级分类列表
+    //删除
+    const [isDeleteVisible, setIsDeleteVisible] = useState(false)
+    //一/二级分类列表
     const [category, setCategory] = useState([])
-    //一级分类列表的名称
+    //一/二级分类列表的名称
     const [categoryName, setCategoryName] = useState('')
     //一级分类列表的id
     const [categoryId, setCategoryId] = useState()
@@ -45,8 +49,9 @@ function Category(props) {
             dataIndex: '',
             render: (category) => (
                 <span>
-                    <Button type="link" onClick={() => {showModify(category)}}>修改分类</Button>
-                    {parentId === '0' ? <Button type="link" onClick={() => {showSubCategory(category)}}>查看子分类</Button> : ''}
+                    <Button type="link" onClick={() => {showModify(category)}} size={"small"}>修改分类</Button>
+                    <Button type="link" onClick={() => {showDeleteModify(category)}} size={"small"}>删除分类</Button>
+                    {parentId === '0' ? <Button size={"small"} type="link" onClick={() => {showSubCategory(category)}}>查看子分类</Button> : ''}
                 </span>
             )
 
@@ -91,11 +96,37 @@ function Category(props) {
         getCategory()
     },[getCategory, parentId])
 
+    // 修改框
     const showModify = (category) => {
         setCategoryName(category.name)
         setCategoryId(category._id)
-        setIsModifyVisible(true);
+        setIsModifyVisible(true)
     };
+
+    //删除框
+    const showDeleteModify = (category) => {
+        setCategoryName(category.name)
+        setCategoryId(category._id)
+        setIsDeleteVisible(true)
+    }
+
+    const deleteOk = () => {
+        reqDeleteCategory({categoryName}).then((response) => {
+            if (response.data.status === 0){
+                getCategory()
+                message.success('删除成功')
+            }else {
+                message.error('删除失败')
+            }
+        }).catch((error) => {
+            message.error('请求出错',error)
+        })
+        setIsDeleteVisible(false);
+    }
+
+    const deleteCancel = () => {
+        setIsDeleteVisible(false)
+    }
 
     // 更新分类
     const modifyOk = () => {
@@ -104,6 +135,7 @@ function Category(props) {
             reqUpDateCategory({categoryId, categoryName}).then((response) => {
                 if (response.data.status === 0){
                     getCategory()
+                    message.success('修改成功')
                 }else {
                     message.error('修改失败')
                 }
@@ -111,10 +143,7 @@ function Category(props) {
                 message.error("请求出错",error)
             })
             setIsModifyVisible(false);
-        }).catch(() => {
-
-            }
-        )
+        })
     }
 
     const modifyCancel = () => {
@@ -141,8 +170,6 @@ function Category(props) {
                 message.error('请求出错',error)
             })
             setIsAddVisible(false);
-        }).catch(() => {
-
         })
     }
 
@@ -164,12 +191,15 @@ function Category(props) {
                 <Button className='btn' type="primary" size='large' onClick={showAdd}><PlusOutlined />添加</Button>}
                 style={{ width: '100%' }
             }>
-                <Table bordered columns={columns} dataSource={parentId === '0' ? category : subCategory} loading={loading} rowKey='_id' />
+                <Table bordered columns={columns} dataSource={parentId === '0' ? category : subCategory} loading={loading} rowKey='_id' size={'small'}/>
                 <Modal title="修改分类" visible={isModifyVisible} onOk={modifyOk} onCancel={modifyCancel} keyboard={true} cancelText='取消' okText='修改' destroyOnClose={true}>
                     <ModifyForm
                         categoryName={categoryName}
                         setModifyForm={(form) => {modifyForm = form}}
                     />
+                </Modal>
+                <Modal title="删除分类" visible={isDeleteVisible} onOk={deleteOk} onCancel={deleteCancel} keyboard={true} cancelText='取消' okText='删除' destroyOnClose={true}>
+                    <DeleteForm categoryName={categoryName}/>
                 </Modal>
                 <Modal title="添加分类" visible={isAddVisible} onOk={addOk} onCancel={addCancel} keyboard={true} cancelText='取消' okText='添加' destroyOnClose={true}>
                     <AddForm

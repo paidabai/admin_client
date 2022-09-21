@@ -24,3 +24,6 @@ export const reqAddCategory = ({parentId, categoryName}) => ajax(`${API}/manage/
 
 //更新分类
 export const reqUpDateCategory = ({categoryId, categoryName}) => ajax(`${API}/manage/category/update`,{categoryId, categoryName},'POST')
+
+//删除分类
+export const reqDeleteCategory = ({categoryName}) => ajax(`${API}/manage/category/delete`,{categoryName})

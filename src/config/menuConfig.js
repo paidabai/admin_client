@@ -9,11 +9,19 @@ export const menuList = [
         children: [
             {
                 title: '品类管理',
-                key: '/commodity/category',
+                key: '/category',
             },
             {
                 title: '商品管理',
-                key: '/commodity/product',
+                key: '/product',
+            },
+            {
+                title: '商品管理',
+                key: '/product/detail',
+            },
+            {
+                title: '商品管理',
+                key: '/product/update',
             },
         ],
     },
@@ -31,15 +39,15 @@ export const menuList = [
         children: [
             {
                 title: '柱形图',
-                key: '/charts/bar',
+                key: '/bar',
             },
             {
                 title: '折线图',
-                key: '/charts/line',
+                key: '/line',
             },
             {
                 title: '饼图',
-                key: '/charts/pie',
+                key: '/pie',
             },
         ],
     },
