@@ -74,7 +74,7 @@ const indexRouter = [
                 element: <Pie />
             },
             {
-                path: '/*',
+                path: '/',
                 element: <Navigate to='/home' />
             }
         ]
@@ -82,7 +82,7 @@ const indexRouter = [
     {
         path: '/*',
         element: <Navigate to='/login'/>
-    }
+    },
 ]
 
 export default indexRouter;

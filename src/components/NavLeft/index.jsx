@@ -48,8 +48,7 @@ function NavLeft(props) {
     const path = location.pathname
     let index = path.indexOf('/')
     index = path.indexOf('/',index + 1)
-    const newPath = path.substring(0,index)
-    console.log(newPath)
+    const newPath = index > 0 ? path.substring(0,index) : location.pathname
 
     return (
         <div className='nav-left'>

@@ -27,3 +27,15 @@ export const reqUpDateCategory = ({categoryId, categoryName}) => ajax(`${API}/ma
 
 //删除分类
 export const reqDeleteCategory = ({categoryName}) => ajax(`${API}/manage/category/delete`,{categoryName})
+
+//获取商品列表
+export const reqProducts = (pageNum, pageSize) => ajax(`${API}/manage/product/list`,{pageNum, pageSize})
+
+//根据（商品名称/商品描述）搜索产品分页列表
+//searchType为productName/productDesc
+export const reqSearchProducts = ({pageNum, pageSize, searchType, searchName}) => ajax(`${API}/manage/product/search`,{
+    pageNum,
+    pageSize,
+    // searchType为变量
+    [searchType]: searchName
+})
