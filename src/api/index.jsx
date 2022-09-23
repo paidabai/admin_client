@@ -28,6 +28,9 @@ export const reqUpDateCategory = ({categoryId, categoryName}) => ajax(`${API}/ma
 //删除分类
 export const reqDeleteCategory = ({categoryName}) => ajax(`${API}/manage/category/delete`,{categoryName})
 
+// 获取一个分类
+export const reqCategoryOne = (categoryId) => ajax(`${API}/manage/category/info`,{categoryId})
+
 //获取商品列表
 export const reqProducts = (pageNum, pageSize) => ajax(`${API}/manage/product/list`,{pageNum, pageSize})
 

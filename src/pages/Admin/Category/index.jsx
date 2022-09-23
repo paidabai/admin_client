@@ -191,7 +191,16 @@ function Category(props) {
                 <Button className='btn' type="primary" size='large' onClick={showAdd}><PlusOutlined />添加</Button>}
                 style={{ width: '100%' }
             }>
-                <Table bordered columns={columns} dataSource={parentId === '0' ? category : subCategory} loading={loading} rowKey='_id' size={'small'}/>
+                <Table
+                    bordered
+                    columns={columns}
+                    dataSource={parentId === '0' ? category : subCategory}
+                    loading={loading}
+                    rowKey='_id'
+                    pagination={{
+                        defaultPageSize: 8,
+                        }}
+                />
                 <Modal title="修改分类" visible={isModifyVisible} onOk={modifyOk} onCancel={modifyCancel} keyboard={true} cancelText='取消' okText='修改' destroyOnClose={true}>
                     <ModifyForm
                         categoryName={categoryName}

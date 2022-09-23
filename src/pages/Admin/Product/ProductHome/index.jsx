@@ -80,7 +80,6 @@ function Home(props) {
     const title = (
         <span>
             <Select
-                value='productName'
                 defaultValue="按名称搜索"
                 style={{
                     width: 140,
