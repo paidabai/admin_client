@@ -2,11 +2,12 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Card, Input, message, Select, Table} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import {reqProducts, reqSearchProducts} from "../../../../api";
+import {Link, useNavigate} from "react-router-dom";
 
 
 function Home(props) {
     // 商品列表
-    const [Products, setProducts] = useState([])
+    const [products, setProducts] = useState([])
     // 商品总数
     const [total, setTotal] = useState(0)
     // 当前页数
@@ -20,6 +21,8 @@ function Home(props) {
 
     //页数
     const PAGE_SIZE = 6
+    // 使用history
+    const Navigate = useNavigate()
 
     // 页面加载时获取商品列表
     const getProducts = useCallback(() => {
@@ -47,7 +50,6 @@ function Home(props) {
         reqSearchProducts({pageNum, pageSize: PAGE_SIZE, searchType,searchName}).then((response) => {
             const products = response.data
             const { list, total } = products.data
-            console.log(products.data)
             if (products.status === 0){
                 setLoading(false)
                 setProducts(list)
@@ -125,11 +127,9 @@ function Home(props) {
         {
             width: 100,
             title: '操作',
-            dataIndex: 'address',
-            key: 'address',
-            render: (category) => (
-                <span>
-                    <Button type="link">详情</Button>
+            render: (products) => (
+                 <span>
+                    <Button type="link" onClick={() => {Navigate('/product/detail', {replace: false,state: products})}}><Link to='/product/detail'>详情</Link></Button>
                     <Button type='link'>修改</Button>
                 </span>
             )
@@ -143,7 +143,7 @@ function Home(props) {
                 <Table bordered
                        loading={loading}
                        columns={columns}
-                       dataSource={Products}
+                       dataSource={products}
                        rowKey='_id'
                        size={'small'}
                        pagination={{total,
