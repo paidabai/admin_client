@@ -21,7 +21,7 @@ function Home(props) {
 
     //页数
     const PAGE_SIZE = 6
-    // 使用history
+    
     const Navigate = useNavigate()
 
     // 页面加载时获取商品列表

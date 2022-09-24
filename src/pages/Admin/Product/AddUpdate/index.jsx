@@ -56,12 +56,12 @@ function AddUpdate(props) {
                     label: c.name,
                     isLeaf: false
                 }))
-                console.log(childOptions)
                 targetOption.children = childOptions
+                setOptions([...options])
             })
         }
         setOptions([...options])
-    },[isUpdate, product.pCategoryId, product.parentId])
+    },[isUpdate, product.pCategoryId])
 
     // 获取分类列表
     const getCategory = useCallback((parentId) => {
@@ -71,10 +71,7 @@ function AddUpdate(props) {
                 const category = result.data
                 if (parentId === '0'){
                     initOptions(category)
-                } else {
-                    return category
                 }
-
             }
         })
     },[initOptions])
