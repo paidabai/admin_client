@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Button, Card, Input, message, Select, Table} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
-import {reqProducts, reqSearchProducts} from "../../../../api";
-import {Link, useNavigate} from "react-router-dom";
+import {reqProducts, reqSearchProducts, reqUpdateStatus} from "../../../../api";
+import {useNavigate} from "react-router-dom";
 
 
 function Home(props) {
@@ -66,13 +66,23 @@ function Home(props) {
         getProducts()
     },[getProducts])
 
-    // 添加商品框
-    const showAdd = () => {
-
+    // 修改商品的状态
+    const updateProductStatus = (status, productId) => {
+        reqUpdateStatus({productId, status}).then((response) => {
+            const data = response.data
+            if (data.status === 0) {
+                // 修改动画加载状态
+                setLoading(true)
+                getProducts()
+                message.success('商品更新成功')
+            }else {
+                message.error('商品更新失败')
+            }
+        })
     }
 
     const extra = (
-        <Button className='btn' type="primary" size='large' onClick={showAdd}>
+        <Button className='btn' type="primary" size='large' onClick={ () => Navigate('update') }>
             <PlusOutlined/>
             添加商品
         </Button>
@@ -116,10 +126,10 @@ function Home(props) {
             title: '状态',
             dataIndex: 'status',
             key: 'status',
-            render: (status) => (
+            render: (status, _id) => (
                 <span>
-                    <Button type="primary">下架</Button>
-                    {status ? <span>在售</span> : <span>已下架</span>}
+                    <Button onClick={ () => updateProductStatus(status === 1 ? 2 : 1, _id) } type="primary">{status === 1 ? '下架' : '上架'}</Button>
+                    <span>{status === 1 ? '在售' : '已下架'}</span>
                 </span>
             )
         },
@@ -128,8 +138,8 @@ function Home(props) {
             title: '操作',
             render: (products) => (
                  <span>
-                    <Button type="link" onClick={() => {Navigate('/product/detail', {replace: false,state: products})}}><Link to='/product/detail'>详情</Link></Button>
-                    <Button type='link'>修改</Button>
+                    <Button type="link" onClick={() => Navigate('detail',{replace: false,state: products})}>详情</Button>
+                    <Button type='link' onClick={() => Navigate('update',{replace: false,state: products})}>修改</Button>
                 </span>
             )
         },

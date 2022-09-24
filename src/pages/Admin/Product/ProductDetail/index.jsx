@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Card, List} from "antd";
 import {
     ArrowLeftOutlined
@@ -6,11 +6,33 @@ import {
 import './index.less'
 import Item from "antd/es/list/Item";
 import {Link, useLocation} from "react-router-dom";
+import {reqCategoryOne} from "../../../../api";
 
 function Detail(props) {
+    // 商品一级分类
+    const [cName1, setCName1] = useState('')
+    // 商品二级分类
+    const [cName2, setCName2] = useState('')
 
-    const {state:{detail, name, desc, price, imgs}} = useLocation()
-    const BASE_IMG_URL = 'http://localhost:3000/upload/'
+    // 获取商品信息
+    const {state:{detail, name, desc, price, imgs, pCategoryId, categoryId}} = useLocation()
+    const BASE_IMG_URL = 'http://www.paidab.love:5000/upload/'
+
+    if (pCategoryId === '0') {
+        reqCategoryOne(pCategoryId).then((response) => {
+            const info = response.data
+            setCName1(info.data.name)
+        })
+    } else {
+        reqCategoryOne(pCategoryId).then((response) => {
+            const info = response.data
+            setCName1(info.data.name)
+        })
+        reqCategoryOne(categoryId).then((response) => {
+            const info = response.data
+            setCName2(info.data.name)
+        })
+    }
 
     const title = (
         <span>
@@ -40,7 +62,9 @@ function Detail(props) {
                     </Item>
                     <Item>
                         <span className='left'>
-                            所属分类:<span className='right'>电脑-->笔记本</span>
+                            所属分类:<span className='right'>
+                                        {cName1} {cName2 ? '--> ' + cName2 : ''}
+                                    </span>
                         </span>
                     </Item>
                     <Item>
