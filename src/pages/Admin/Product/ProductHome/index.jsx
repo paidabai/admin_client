@@ -183,6 +183,7 @@ function Home(props) {
                          onCancel={handleCancel}
                          okText='确定'
                          cancelText='取消'
+                         mask={false}
                      >
                         <p>{modalText}</p>
                     </Modal>
