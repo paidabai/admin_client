@@ -4,6 +4,7 @@ import {Link, useLocation} from "react-router-dom";
 import {ArrowLeftOutlined} from "@ant-design/icons";
 import './index.less'
 import {reqCategory} from "../../../../api";
+import PicturesWall from "../PicturesWall";
 
 const optionLists = [];
 
@@ -170,10 +171,7 @@ function AddUpdate(props) {
                         name="imgs"
                         label="商品图片"
                         >
-                        <Cascader
-                            options={options}
-                            expandTrigger="hover"
-                        />
+                        <PicturesWall />
                     </Form.Item>
                     <Form.Item
                         name="detail"

@@ -16,7 +16,7 @@ function Detail(props) {
 
     // 获取商品信息
     const {state:{detail, name, desc, price, imgs, pCategoryId, categoryId}} = useLocation()
-    const BASE_IMG_URL = 'http://www.paidab.love:5000/upload/'
+    const BASE_IMG_URL = 'http://47.109.46.228:5000/upload/'
 
     if (pCategoryId === '0') {
         reqCategoryOne(pCategoryId).then((response) => {
