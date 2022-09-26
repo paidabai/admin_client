@@ -1,27 +1,35 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Button, Card, Cascader, Form, Input} from "antd";
-import {Link, useLocation} from "react-router-dom";
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Button, Card, Cascader, Form, Input, message} from "antd";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {ArrowLeftOutlined} from "@ant-design/icons";
 import './index.less'
-import {reqCategory} from "../../../../api";
-import PicturesWall from "../PicturesWall";
+import {reqAddOrUpdateProduct, reqCategory} from "../../../../api";
+import PicturesWall from "./PicturesWall";
+import RichTextEditor from "./RichTextEditor";
 
 const optionLists = [];
 
 function AddUpdate(props) {
+    const navigate = useNavigate();
+    // 上传图片组件的ref
+    const picturesRef = useRef()
+    // 富文本组件的ref
+    const richTextRef = useRef()
     // 商品分类列表
-    const [options, setOptions] = useState(optionLists);
+    const [options, setOptions] = useState(optionLists)
     // 判断修改和添加
     const isUpdate = !!useLocation().state
     // 保存商品信息
     const product = useLocation().state || {}
+    // 保存商品的图片/详情(传给PicturesWall/RichTextEditor组件)
+    const {imgs, detail, _id}= product
     // 存储分类id的数组
     const info = []
     // 获取分类id
     const {pCategoryId, categoryId} = product
     if (isUpdate) {
         if (pCategoryId === '0'){
-        info.push(pCategoryId)
+            info.push(pCategoryId)
         } else {
             info.push(pCategoryId)
             info.push(categoryId)
@@ -83,7 +91,34 @@ function AddUpdate(props) {
 
     // 表单验证成功后请求
     const onFinish = (values) => {
-        console.log(values);
+        const {name, desc, price, info} = values
+        let pCategoryId ,categoryId
+        if (info.length === 1) {
+            pCategoryId = '0'
+            categoryId = info[0]
+        } else {
+            pCategoryId = info[0]
+            categoryId = info[1]
+        }
+        // 调用子组件暴露给父组件的方法
+        const imgs = picturesRef.current.getImages()
+        const detail = richTextRef.current.getDetail()
+        // 准备发送请求的product对象
+        const product = {name, desc, price, imgs, detail, pCategoryId, categoryId}
+        // 如果为更新商品添加_id
+        if (isUpdate) {
+            product._id = _id
+        }
+        // 请求接口
+        reqAddOrUpdateProduct(product).then((response) => {
+            const result = response.data
+            if (result.status === 0) {
+                message.success( `商品${isUpdate ? '更新' : '添加'}成功`)
+                navigate('/product')
+            } else {
+                message.error(`商品${isUpdate ? '更新' : '添加'}失败`)
+            }
+        })
     };
 
     // 加载下级分类的回调
@@ -95,7 +130,6 @@ function AddUpdate(props) {
 
         // 根据选中的分类获取二级分类
         reqCategory(targetOption.value).then((response) => {
-            console.log(targetOption.value)
             const subCategory = response.data
             targetOption.loading = false;
             // 获取到二级分类
@@ -131,12 +165,9 @@ function AddUpdate(props) {
                         name="name"
                         label="商品名称"
                         rules={
-                        [
-                            { required: true, message: '请输入商品名称!'},
-                            { pattern: /^[\u4e00-\u9fa5_a-zA-Z0-9]+$/, message: '请勿输入非法字符'}
-                        ]
+                        [{ required: true, message: '请输入商品名称!'},]
                     }>
-                        <Input value='23' />
+                        <Input />
                     </Form.Item>
                     <Form.Item
                         initialValue= {product.desc}
@@ -171,16 +202,15 @@ function AddUpdate(props) {
                         name="imgs"
                         label="商品图片"
                         >
-                        <PicturesWall />
+                        <PicturesWall ref={picturesRef} imgs={imgs}/>
                     </Form.Item>
                     <Form.Item
                         name="detail"
                         label="商品详情"
+                        labelCol= {{ span: 2 }}
+                        wrapperCol= {{ span: 12 }}
                         >
-                        <Cascader
-                            options={options}
-                            changeOnSelect
-                        />
+                            <RichTextEditor ref={richTextRef} detail={detail}/>
                     </Form.Item>
                     <Form.Item>
                         <Button htmlType='submit' >提交</Button>

@@ -34,7 +34,7 @@ function Admin(props) {
             <Layout>
                 <Header/>
                 <Content className='content'>
-                    <Outlet/>
+                    <Outlet />
                 </Content>
                 <Footer />
             </Layout>

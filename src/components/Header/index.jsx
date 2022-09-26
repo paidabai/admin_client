@@ -32,27 +32,29 @@ function Header(props) {
         setIsModalVisible(false);
     };
 
+    const getWeather = () => {
+        reqWeather('成都', (err, data) => {
+            if (!err && data.status === '1'){
+                setTemperature(data.lives[0].temperature)
+                setCity(data.lives[0].city)
+            }else {
+                message.error('天气获取失败')
+            }
+        })
+    }
+
     useEffect(() => {
-        const getWeather = () => {
-            reqWeather('成都', (err, data) => {
-                if (!err && data.status === '1'){
-                    setTemperature(data.lives[0].temperature)
-                    setCity(data.lives[0].city)
-                }else {
-                    message.error('天气获取失败')
-                }
-            })
-        }
         getWeather()
     })
 
+    const getTime = () => {
+        setInterval(() => {
+            const currentTime = formatDate(Date.now())
+            setCurrentTime(currentTime)
+        }, 1000)
+    }
+
     useEffect(() => {
-        const getTime = () => {
-            setInterval(() => {
-                const currentTime = formatDate(Date.now())
-                setCurrentTime(currentTime)
-            }, 1000)
-        }
         getTime()
     })
 

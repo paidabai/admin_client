@@ -7,6 +7,7 @@ import './index.less'
 import Item from "antd/es/list/Item";
 import {Link, useLocation} from "react-router-dom";
 import {reqCategoryOne} from "../../../../api";
+import {BASE_IMG_URL} from '../../../../utils/constants'
 
 function Detail(props) {
     // 商品一级分类
@@ -16,8 +17,8 @@ function Detail(props) {
 
     // 获取商品信息
     const {state:{detail, name, desc, price, imgs, pCategoryId, categoryId}} = useLocation()
-    const BASE_IMG_URL = 'http://47.109.46.228:5000/upload/'
 
+    // 获取一级/二级分类
     if (pCategoryId === '0') {
         reqCategoryOne(pCategoryId).then((response) => {
             const info = response.data

@@ -45,3 +45,12 @@ export const reqSearchProducts = ({pageNum, pageSize, searchType, searchName}) =
     // searchType为变量
     [searchType]: searchName
 })
+
+// 删除图片
+export const reqDeleteImage = (name) => ajax(`${API}/manage/img/delete`, {name}, 'POST')
+
+// 添加/更新商品
+export const reqAddOrUpdateProduct = (product) => ajax(`${API}/manage/product/` + (product._id ? 'update' : 'add'),product,'POST')
+
+// 删除商品
+export const reqDeleteProduct = (name) => ajax(`${API}/manage/product/delete`, {name})

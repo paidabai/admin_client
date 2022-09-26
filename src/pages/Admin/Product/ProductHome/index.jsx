@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {Button, Card, Input, message, Select, Table} from "antd";
+import {Button, Card, Input, message, Modal, Select, Table} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
-import {reqProducts, reqSearchProducts, reqUpdateStatus} from "../../../../api";
+import {reqDeleteProduct, reqProducts, reqSearchProducts, reqUpdateStatus} from "../../../../api";
 import {useNavigate} from "react-router-dom";
+import {PAGE_SIZE} from '../../../../utils/constants'
 
 
 function Home(props) {
@@ -18,10 +19,15 @@ function Home(props) {
     const [searchType, setSearchType] = useState('productName')
     // 搜索内容
     const [searchName, setSearchName] = useState('')
+    // 删除商品对话框状态
+    const [open, setOpen] = useState(false);
+    // 加载动画的状态
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    // 对话框提示的文字
+    const [modalText, setModalText] = useState('');
+    // 删除商品的name
+    const [deleteProductName, setDeleteProductName] = useState('')
 
-    //页数
-    const PAGE_SIZE = 6
-    
     const Navigate = useNavigate()
 
     // 页面加载时获取商品列表
@@ -80,6 +86,34 @@ function Home(props) {
             }
         })
     }
+
+    const showModal = (products) => {
+        setDeleteProductName(products.name)
+        setOpen(true);
+        setModalText('确定删除该商品吗？');
+    };
+
+    const handleOk = () => {
+        setConfirmLoading(true);
+        console.log(deleteProductName)
+        reqDeleteProduct(deleteProductName).then((response) => {
+            const result = response.data
+            if (result.status === 0) {
+                setTimeout(() => {
+                    setOpen(false);
+                    setConfirmLoading(false);
+                    message.success('删除成功')
+                    getProducts()
+                }, 1000);
+            } else {
+                message.error('删除失败')
+            }
+        })
+    };
+
+    const handleCancel = () => {
+        setOpen(false);
+    };
 
     const extra = (
         <Button className='btn' type="primary" size='large' onClick={ () => Navigate('update') }>
@@ -140,6 +174,18 @@ function Home(props) {
                  <span>
                     <Button type="link" onClick={() => Navigate('detail',{replace: false,state: products})}>详情</Button>
                     <Button type='link' onClick={() => Navigate('update',{replace: false,state: products})}>修改</Button>
+                    <Button type='link' onClick={() => {showModal(products)}}>删除</Button>
+                     <Modal
+                         title="删除商品"
+                         visible={open}
+                         onOk={() => handleOk(products)}
+                         confirmLoading={confirmLoading}
+                         onCancel={handleCancel}
+                         okText='确定'
+                         cancelText='取消'
+                     >
+                        <p>{modalText}</p>
+                    </Modal>
                 </span>
             )
         },

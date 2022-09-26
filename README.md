@@ -8,3 +8,17 @@
     element:<News/>  组件名
     },
 6. 嵌套路由的组件<Outlet/>放在路由需要显示的位置
+7. 子组件通过ref传值给父组件需要 useImperativeHandle 和 forwardRef 配合一起使用
+   子组件：
+   const Children = forwardRef((props, ref) => {
+       useImperativeHandle(ref, () => ({
+       // hello 就是暴露给父组件的方法
+       hello(): {
+           console.log('访问到了子组件的方法');
+       }
+       }))
+   });
+   父组件：
+   const childrenRef = useRef(); 
+   childrenRef.current.hello();
+   <Children ref={childrenRef}/>
