@@ -13,7 +13,7 @@
    const Children = forwardRef((props, ref) => {
        useImperativeHandle(ref, () => ({
        // hello 就是暴露给父组件的方法
-       hello(): {
+       hello:() => {
            console.log('访问到了子组件的方法');
        }
        }))

@@ -14,12 +14,10 @@ function AddForm(props) {
     return (
         <Form form={form}>
             <p>所属分类:</p>
-            <Form.Item name='newCategoryName'>
                     {parentId === '0' ?
                         <Input value="一级分类"  disabled={true}/> :
                         <Input value={categoryName} disabled={true}/>
                     }
-            </Form.Item>
                 <p>分类名称:</p>
             <Form.Item name='categoryName'
                        rules={[

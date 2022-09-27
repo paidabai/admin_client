@@ -18,20 +18,24 @@ function Header(props) {
     const [temperature, setTemperature] = useState('')
     const [city, setCity] = useState('')
 
+    // 显示确认退出对话框
     const showModal = () => {
         setIsModalVisible(true);
     };
 
+    // 确定退出登录
     const handleOk = () => {
         storageUtils.removeUser()
         memoryUtils.user = {}
         navigate('/login')
     };
 
+    // 取消退出登录
     const handleCancel = () => {
         setIsModalVisible(false);
     };
 
+    // 获取天气
     const getWeather = () => {
         reqWeather('成都', (err, data) => {
             if (!err && data.status === '1'){
@@ -43,10 +47,19 @@ function Header(props) {
         })
     }
 
+    // 页面加载时挂载一次
     useEffect(() => {
         getWeather()
+    },[])
+
+    // 每一小时更新一次
+    useEffect(() => {
+        setInterval(() => {
+            getWeather()
+        },3600000)
     })
 
+    // 获取当前的时间
     const getTime = () => {
         setInterval(() => {
             const currentTime = formatDate(Date.now())
@@ -58,6 +71,7 @@ function Header(props) {
         getTime()
     })
 
+    // 获取标头
     const getTitle = () => {
         const path = location.pathname
         let title

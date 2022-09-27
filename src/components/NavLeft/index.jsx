@@ -44,6 +44,7 @@ const items = [
 
 function NavLeft(props) {
 
+    // 使用location hook
     const location = useLocation()
     const path = location.pathname
     let index = path.indexOf('/')

@@ -54,3 +54,12 @@ export const reqAddOrUpdateProduct = (product) => ajax(`${API}/manage/product/` 
 
 // 删除商品
 export const reqDeleteProduct = (name) => ajax(`${API}/manage/product/delete`, {name})
+
+// 获取角色列表
+export const reqRolesList = () => ajax(`${API}/manage/role/list`)
+
+// 添加角色
+export const reqAddRole = (roleName) => ajax(`${API}/manage/role/add`,{roleName},'POST')
+
+// 设置角色权限
+export const reqUpdateRole = (role) => ajax(`${API}/manage/role/update`,role,'POST')

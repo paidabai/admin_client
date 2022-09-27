@@ -95,7 +95,6 @@ function Home(props) {
 
     const handleOk = () => {
         setConfirmLoading(true);
-        console.log(deleteProductName)
         reqDeleteProduct(deleteProductName).then((response) => {
             const result = response.data
             if (result.status === 0) {
