@@ -4,7 +4,12 @@ import {treeList} from "../../../../config/menuConfig";
 
 const AuthForm = forwardRef((props,ref) => {
     const [form] = Form.useForm()
-    const {role} = props
+    const {role:{name, menus}} = props
+
+    useEffect(() => {
+        form.resetFields()
+    },[form,props.role])
+
     // 角色选中的权限
     const [checkedKeys, setCheckedKeys] = useState()
     // 选中某个权限时的回调
@@ -12,22 +17,25 @@ const AuthForm = forwardRef((props,ref) => {
         setCheckedKeys(checkedKeys)
     };
 
+    // 更新选择的权限
     useEffect(() => {
-        setCheckedKeys(role.menus)
-    },[role.menus])
+        setCheckedKeys(menus)
+    },[menus])
     const treeData = treeList;
 
+    // 传给父元素的方法
     useImperativeHandle(ref, () => ({
         getMenus: () => {
             return checkedKeys
         }
     }))
+
     return (
         <Form
             form={form}
         >
             <Form.Item name='name'
-                       initialValue={role.name}
+                       initialValue={name}
                        label="角色名称:"
                       >
                 <Input disabled/>

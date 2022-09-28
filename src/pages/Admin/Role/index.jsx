@@ -1,11 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Button, Card, Form, message, Modal, Space, Table} from "antd";
 import {PAGE_SIZE} from "../../../utils/constants";
-import {reqAddRole, reqRolesList, reqUpdateRole} from "../../../api";
+import {reqAddRole, reqDeleteRole, reqRolesList, reqUpdateRole} from "../../../api";
 import AddRole from "./AddRole";
 import AuthForm from "./AuthForm";
 import memoryUtils from "../../../utils/memoryUtils";
 import {formatDate} from "../../../utils/dateUtils";
+import DeleteForm from "./DeleteForm";
 
 function Role(props) {
     // 角色列表
@@ -20,16 +21,18 @@ function Role(props) {
     const [open, setOpen] = useState(false);
     // 添加角色权限的对话框状态
     const [openAuth, setOpenAuth] = useState(false);
+    // 删除角色的对话框状态
+    const [isDeleteVisible, setIsDeleteVisible] = useState(false)
     // 创建form
     let AddForm = Form.useForm()
     // 使用ref
-    const childrenRef = useRef();
+    const childrenRef = useRef()
     // 当前登录的用户/授权用户名
     const userName = memoryUtils.user.username
 
     // 打开创建角色对话框
     const showModal = () => {
-            setOpen(true)
+        setOpen(true)
     }
 
     // 打开设置角色权限对话框
@@ -54,6 +57,7 @@ function Role(props) {
                     message.success('角色添加成功')
                     setOpen(false)
                     getRoles()
+                    // 清空添加对话框里面的内容
                     AddForm.resetFields()
                 } else {
                     message.error('角色添加失败')
@@ -81,7 +85,7 @@ function Role(props) {
         setOpenAuth(false)
     }
 
-    // 表格头部
+    // 表格
     const columns = [
         {
             title: '角色名称',
@@ -103,7 +107,39 @@ function Role(props) {
             dataIndex: 'auth_name',
             key: 'auth_name',
         },
+        {
+            title: '操作',
+            dataIndex: 'delete',
+            key: 'delete',
+            render: () => (
+                <Button type="link" size="small" onClick={isShowDelete}>删除</Button>
+            )
+        },
     ]
+
+    // 显示删除对话框
+    const isShowDelete = () => {
+        setIsDeleteVisible(true)
+    }
+
+    // 点击确认删除
+    const deleteOk = () => {
+        reqDeleteRole(role.name).then((response) => {
+            const result = response.data
+            if (result.status === 0){
+                message.success('删除成功')
+                setIsDeleteVisible(false)
+                getRoles()
+            } else {
+                message.error('删除出错')
+            }
+        })
+    }
+
+    // 点击删除对话框取消
+    const deleteCancel = () => {
+        setIsDeleteVisible(false)
+    }
 
     // 获取角色列表
     const getRoles = () => {
@@ -153,6 +189,14 @@ function Role(props) {
 
     const select = (selectedRowKeys, selectedRows) => {
         setRoleId(selectedRows[0]._id)
+        // 保存创建角色的时间戳
+        let createTime = new Date(selectedRows[0].create_time).getTime()
+        // 保存授权角色的时间戳
+        let authTime = new Date(selectedRows[0].auth_time).getTime()
+        // 更新为时间戳
+        selectedRows[0].create_time = createTime
+        selectedRows[0].auth_time = authTime
+        // 更改role状态
         setRole(selectedRows[0])
     }
 
@@ -160,6 +204,14 @@ function Role(props) {
         return {
             onClick: event => {
                 setRoleId(roles._id)
+                // 保存创建角色的时间戳
+                let createTime = new Date(roles.create_time).getTime()
+                // 保存授权角色的时间戳
+                let authTime = new Date(roles.auth_time).getTime()
+                // 更新为时间戳
+                roles.create_time = createTime
+                roles.auth_time = authTime
+                // 更改role状态
                 setRole(roles)
             }, // 点击行
         }
@@ -203,9 +255,13 @@ function Role(props) {
                 mask={false}
             >
                 <AuthForm
-                    setAddForm={(form) => {AddForm = form}}
                     role={role}
                     ref={childrenRef}
+                />
+            </Modal>
+            <Modal title="删除分类" visible={isDeleteVisible} onOk={deleteOk} onCancel={deleteCancel} keyboard={true} cancelText='取消' okText='删除' destroyOnClose={true}>
+                <DeleteForm
+                    role={role}
                 />
             </Modal>
         </Card>

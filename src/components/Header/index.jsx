@@ -2,10 +2,10 @@ import './index.less'
 import {useLocation, useNavigate} from "react-router-dom";
 import storageUtils from "../../utils/storageUtils";
 import memoryUtils from "../../utils/memoryUtils";
-import {Button, message, Modal} from "antd";
+import {Button, Modal} from "antd";
 import {useEffect, useState} from "react";
 import {formatDate} from "../../utils/dateUtils";
-import {reqWeather} from "../../api";
+// import {reqWeather} from "../../api";
 import {menuList} from "../../config/menuConfig";
 
 function Header(props) {
@@ -15,8 +15,8 @@ function Header(props) {
     const location = useLocation()
     const [isModalVisible, setIsModalVisible] = useState(false)
     const [currentTime, setCurrentTime] = useState(formatDate(Date.now()))
-    const [temperature, setTemperature] = useState('')
-    const [city, setCity] = useState('')
+    // const [temperature, setTemperature] = useState('')
+    // const [city, setCity] = useState('')
 
     // 显示确认退出对话框
     const showModal = () => {
@@ -36,28 +36,21 @@ function Header(props) {
     };
 
     // 获取天气
-    const getWeather = () => {
-        reqWeather('成都', (err, data) => {
-            if (!err && data.status === '1'){
-                setTemperature(data.lives[0].temperature)
-                setCity(data.lives[0].city)
-            }else {
-                message.error('天气获取失败')
-            }
-        })
-    }
+    // const getWeather = () => {
+    //     reqWeather('成都', (err, data) => {
+    //         if (!err && data.status === '1'){
+    //             setTemperature(data.lives[0].temperature)
+    //             setCity(data.lives[0].city)
+    //         }else {
+    //             message.error('天气获取失败')
+    //         }
+    //     })
+    // }
 
     // 页面加载时挂载一次
-    useEffect(() => {
-        getWeather()
-    },[])
-
-    // 每一小时更新一次
-    useEffect(() => {
-        setInterval(() => {
-            getWeather()
-        },3600000)
-    })
+    // useEffect(() => {
+    //     getWeather()
+    // },[])
 
     // 获取当前的时间
     const getTime = () => {
@@ -107,7 +100,7 @@ function Header(props) {
                 </div>
                 <div className='header-bottom-right'>
                     <span>{currentTime}</span>
-                    <span>{city}当前的气温为:{temperature}℃</span>
+                    {/*<span>{city}当前的气温为:{temperature}℃</span>*/}
                 </div>
             </div>
         </div>

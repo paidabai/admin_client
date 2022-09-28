@@ -54,7 +54,6 @@ function Category(props) {
                     {parentId === '0' ? <Button size={"small"} type="link" onClick={() => {showSubCategory(category)}}>查看子分类</Button> : ''}
                 </span>
             )
-
         },
     ];
 
@@ -187,9 +186,9 @@ function Category(props) {
 
     return (
         <div>
-            <Card title={tableTitle} extra={
-                <Button className='btn' type="primary" size='large' onClick={showAdd}><PlusOutlined />添加</Button>}
-                style={{ width: '100%' }
+            <Card title={tableTitle}
+                  extra={<Button className='btn' type="primary" size='large' onClick={showAdd}><PlusOutlined />添加</Button>}
+                  style={{ width: '100%' }
             }>
                 <Table
                     bordered
@@ -207,10 +206,26 @@ function Category(props) {
                         setModifyForm={(form) => {modifyForm = form}}
                     />
                 </Modal>
-                <Modal title="删除分类" visible={isDeleteVisible} onOk={deleteOk} onCancel={deleteCancel} keyboard={true} cancelText='取消' okText='删除' destroyOnClose={true}>
+                <Modal
+                    title="删除分类"
+                    visible={isDeleteVisible}
+                    onOk={deleteOk}
+                    onCancel={deleteCancel}
+                    keyboard={true}
+                    cancelText='取消'
+                    okText='删除'
+                    destroyOnClose={true}>
                     <DeleteForm categoryName={categoryName}/>
                 </Modal>
-                <Modal title="添加分类" visible={isAddVisible} onOk={addOk} onCancel={addCancel} keyboard={true} cancelText='取消' okText='添加' destroyOnClose={true}>
+                <Modal
+                    title="添加分类"
+                    visible={isAddVisible}
+                    onOk={addOk}
+                    onCancel={addCancel}
+                    keyboard={true}
+                    cancelText='取消'
+                    okText='添加'
+                    destroyOnClose={true}>
                     <AddForm
                         categoryName={categoryName}
                         parentId={parentId}

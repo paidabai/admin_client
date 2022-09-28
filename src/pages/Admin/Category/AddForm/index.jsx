@@ -18,6 +18,8 @@ function AddForm(props) {
                         <Input value="一级分类"  disabled={true}/> :
                         <Input value={categoryName} disabled={true}/>
                     }
+            <br/>
+            <br/>
                 <p>分类名称:</p>
             <Form.Item name='categoryName'
                        rules={[

@@ -7,8 +7,14 @@ const KEY = '26d9920252bfc3344a38a18b9ca1f2a0'
 // 登录
 export const reqLogin = (username, password) => ajax(`${API}/login`,{username, password}, 'POST')
 
+// 获取用户列表
+export const reqUsers = () => ajax(`${API}/manage/user/list`)
+
 // 添加用户
 export const reqAddUser = (user) => ajax(`${API}/manage/user/add`, user, 'POST')
+
+// 删除用户
+export const reqDeleteUser = (userId) => ajax(`${API}/manage/user/delete`,{userId},'POST')
 
 // 获取天气
 export const reqWeather = (city, fn) => {
@@ -63,3 +69,6 @@ export const reqAddRole = (roleName) => ajax(`${API}/manage/role/add`,{roleName}
 
 // 设置角色权限
 export const reqUpdateRole = (role) => ajax(`${API}/manage/role/update`,role,'POST')
+
+// 删除角色
+export const reqDeleteRole = (name) => ajax(`${API}/manage/role/delete`,{name})
