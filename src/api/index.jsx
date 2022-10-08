@@ -13,6 +13,9 @@ export const reqUsers = () => ajax(`${API}/manage/user/list`)
 // 添加用户
 export const reqAddUser = (user) => ajax(`${API}/manage/user/add`, user, 'POST')
 
+// 更新用户
+export const reqUpdateUser = (user) => ajax(`${API}/manage/user/update`, user, 'POST')
+
 // 删除用户
 export const reqDeleteUser = (userId) => ajax(`${API}/manage/user/delete`,{userId},'POST')
 

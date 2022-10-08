@@ -28,7 +28,6 @@ function Login(props) {
             } else {
                 message.error(result.msg)
             }
-
         }).catch((error) => {
             message.error('请求出错' + error.message)
         })

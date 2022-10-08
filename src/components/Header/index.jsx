@@ -67,12 +67,15 @@ function Header(props) {
     // 获取标头
     const getTitle = () => {
         const path = location.pathname
+        let index = path.indexOf('/')
+        index = path.indexOf('/',index + 1)
+        let newPath = index > 0 ? path.substring(0,index) : location.pathname
         let title
         menuList.forEach(item => {
-            if (item.key === path){
+            if (item.key === newPath){
                 title = item.title
             }else if (item.children){
-                const cItem = item.children.find(cItem => cItem.key === path)
+                const cItem = item.children.find(cItem => cItem.key === newPath)
                 if (cItem){
                     title = cItem.title
                 }

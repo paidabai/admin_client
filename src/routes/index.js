@@ -62,15 +62,15 @@ const indexRouter = [
                 element: <Role />
             },
             {
-                path: 'bar',
+                path: 'charts/bar',
                 element: <Bar />
             },
             {
-                path: 'line',
+                path: 'charts/line',
                 element: <Line />
             },
             {
-                path: 'pie',
+                path: 'charts/pie',
                 element: <Pie />
             },
             {

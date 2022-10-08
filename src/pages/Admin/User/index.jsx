@@ -4,7 +4,7 @@ import {PAGE_SIZE} from "../../../utils/constants";
 import CreateUser from "./CreateUser";
 import UpdateUser from "./UpdateUser";
 import DeleteUser from "./DeleteUser";
-import {reqAddUser, reqDeleteUser, reqUsers} from "../../../api";
+import {reqAddUser, reqDeleteUser, reqUpdateUser, reqUsers} from "../../../api";
 import {formatDate} from "../../../utils/dateUtils";
 
 function User(props) {
@@ -84,7 +84,8 @@ function User(props) {
                 if (result.status === 0) {
                     message.success('添加成功')
                     setOpenCreate(false)
-                    getUsers()
+                } else if (result.status === 1) {
+                    message.error('该用户已存在')
                 } else {
                     message.error('添加失败')
                 }
@@ -112,7 +113,18 @@ function User(props) {
 
     // 点击确认修改用户的回调
     const UpdateOk = () => {
-
+        const newUser = {...updateForm.getFieldsValue(),_id:user._id}
+        reqUpdateUser(newUser).then((response) => {
+            const result = response.data
+            if (result.status === 0) {
+                message.success('修改成功')
+                setOpenUpdate(false)
+            } else if (result.status === 1) {
+                message.error('该用户已存在')
+            } else {
+                message.error('修改失败')
+            }
+        })
     }
 
     // 点击取消修改用户的回调
@@ -133,7 +145,6 @@ function User(props) {
             const result = response.data
             if (result.status === 0) {
                 message.success('删除成功')
-                getUsers()
             } else {
                 message.error('删除失败')
             }
@@ -163,7 +174,7 @@ function User(props) {
 
     useEffect(() => {
         getUsers()
-    },[])
+    },[users])
 
     return (
         <div>
