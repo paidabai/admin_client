@@ -20,13 +20,14 @@ function Detail(props) {
 
     // 获取一级/二级分类
     if (pCategoryId === '0') {
-        reqCategoryOne(pCategoryId).then((response) => {
+        reqCategoryOne(categoryId).then((response) => {
             const info = response.data
             setCName1(info.data.name)
         })
     } else {
         reqCategoryOne(pCategoryId).then((response) => {
             const info = response.data
+            console.log(info)
             setCName1(info.data.name)
         })
         reqCategoryOne(categoryId).then((response) => {
