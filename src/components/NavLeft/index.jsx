@@ -17,11 +17,10 @@ function getItem(label, key, icon, children, type) {
 }
 
 function NavLeft(props) {
-    const [menuSet, setMenuSet] = useState(new Set())
-    const [item, setItem] = useState([])
-    const user = memoryUtils.user
+    const [menuSet, setMenuSet] = useState(new Set([]))
     // 使用location hook
     const location = useLocation()
+    const [item, setItem] = useState([])
     const path = location.pathname
     let index = path.indexOf('/')
     index = path.indexOf('/',index + 1)
@@ -67,8 +66,9 @@ function NavLeft(props) {
 
     useEffect(() => {
         setItem(getMenuNodes(menuList))
-        setMenuSet(new Set(user.role.menus || []))
-    },[getMenuNodes,user.role.menus])
+        setMenuSet(new Set( location.pathname === '/home' ? memoryUtils.user.role.menus : []))
+    },[getMenuNodes, location.pathname])
+
 
     return (
         <div className='nav-left'>
