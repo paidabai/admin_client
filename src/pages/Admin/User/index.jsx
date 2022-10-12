@@ -92,12 +92,12 @@ function User(props) {
             })
         })
 
+        console.log(updateForm.getFieldsValue())
     }
 
     // 点击取消创建用户的回调
     const handleCancel = () => {
         setOpenCreate(false)
-        childrenRef.current.setUpdateFrom().resetFields()
     }
 
     // 点击创建用户的对话框

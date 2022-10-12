@@ -71,7 +71,7 @@ function Home(props) {
             <Card
                 title="商品总量(个)"
                 style={{
-                    width: 1920,
+                    width: 1450,
                 }}
             >
                 <p style={{fontSize:20,fontWeight:800}}>1,128,194</p>
@@ -109,7 +109,7 @@ function Home(props) {
                 </div>
             </Card>
             <br/>
-            <ReactECharts option={getOption()} style={{height:650, width: 1920}} />
+            <ReactECharts option={getOption()} style={{height:450, width: 1450}} />
         </div>
     );
 }
