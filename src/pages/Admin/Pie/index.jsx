@@ -51,7 +51,7 @@ function pie(props) {
     }
     return (
         <div>
-            <ReactECharts option={getOption()} style={{height:750, width: 1450}} />
+            <ReactECharts option={getOption()} style={{height:750, width: `100%`}} />
         </div>
     );
 }

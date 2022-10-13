@@ -27,7 +27,7 @@ function Bar(props) {
 
     return (
         <div>
-            <ReactECharts option={getOption()} style={{height:500, width: 1450}} />
+            <ReactECharts option={getOption()} style={{height:500, width: `100%`}} />
         </div>
     );
 }
