@@ -1,17 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import logo from './images/login-logo.png'
-// import {
-//     BarChartOutlined,
-//     UserOutlined,
-//     ShoppingOutlined,
-//     SolutionOutlined,
-//     HomeOutlined,
-//     MenuUnfoldOutlined,
-//     TagsOutlined,
-//     DotChartOutlined,
-//     LineChartOutlined,
-//     PieChartOutlined
-// } from '@ant-design/icons';
 import { Menu } from 'antd';
 import './index.less'
 import {NavLink, useLocation} from "react-router-dom";
@@ -28,28 +16,11 @@ function getItem(label, key, icon, children, type) {
     };
 }
 
-// const items = [
-//     getItem(<NavLink to='home'>首页</NavLink>, '/home', <HomeOutlined />),
-//     getItem('商品', '/products', <ShoppingOutlined />, [
-//         getItem(<NavLink to='category'>品类管理</NavLink>, '/category', <MenuUnfoldOutlined />),
-//         getItem(<NavLink to='product'>商品管理</NavLink>, '/product', <TagsOutlined />),
-//     ]),
-//     getItem(<NavLink to='user'>用户管理</NavLink>, '/user', <UserOutlined />),
-//     getItem(<NavLink to='role'>角色管理</NavLink>, '/role', <SolutionOutlined />),
-//     getItem('图形图表', '/charts', <DotChartOutlined />, [
-//         getItem(<NavLink to='/charts/bar'>柱形图</NavLink>, '/charts/bar', <BarChartOutlined />),
-//         getItem(<NavLink to='/charts/line'>折线图</NavLink>, '/charts/line', <LineChartOutlined />),
-//         getItem(<NavLink to='/charts/pie'>饼图</NavLink>, '/charts/pie', <PieChartOutlined />)
-//     ]),
-// ];
-
-
 function NavLeft(props) {
-    // const [menuSet, setMenuSet] = useState([])
-    const [item, setItem] = useState([])
-    const user = memoryUtils.user
+    const [menuSet, setMenuSet] = useState(new Set([]))
     // 使用location hook
     const location = useLocation()
+    const [item, setItem] = useState([])
     const path = location.pathname
     let index = path.indexOf('/')
     index = path.indexOf('/',index + 1)
@@ -57,8 +28,6 @@ function NavLeft(props) {
     if (newPath === '/charts') {
         newPath = location.pathname
     }
-    // 获取
-    let menuSet = new Set(user.role.menus || [])
     // 判断用户是否有权限
     const hasAuth = useCallback((item) => {
         const key = item.key
@@ -97,7 +66,9 @@ function NavLeft(props) {
 
     useEffect(() => {
         setItem(getMenuNodes(menuList))
-    },[getMenuNodes])
+        setMenuSet(new Set( location.pathname === '/home' ? memoryUtils.user.role.menus : []))
+    },[getMenuNodes, location.pathname])
+
 
     return (
         <div className='nav-left'>

@@ -183,7 +183,7 @@ function AddUpdate(props) {
                         rules={
                         [
                             { required: true, message: '请输入商品价格!'},
-                            { pattern: /^[1-9]*[1-9][0-9]*$/, message: '价格不能低于0元!' }
+                            { pattern: /^[1-9]*[1-9][0-9]*$/, message: '请输入正确价格不能低于0元!' }
                         ]
                     }>
                         <Input prefix="￥" suffix="RMB" />
