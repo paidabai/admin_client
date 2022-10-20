@@ -66,7 +66,7 @@ function NavLeft(props) {
 
     useEffect(() => {
         setItem(getMenuNodes(menuList))
-        setMenuSet(new Set( location.pathname === '/login' ? [] : memoryUtils.user.role.menus))
+        setMenuSet(new Set( localStorage.user_key ? memoryUtils.user.role.menus : []))
     },[getMenuNodes, location.pathname])
 
     return (
