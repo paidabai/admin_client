@@ -3,17 +3,22 @@ import {Form, Input, Select} from "antd";
 
 function UpdateUser (props) {
 
-    const {setUpateForm, roles, user:{username, phone, email, role_id}} = props
+    const {setUpateForm, roles, user} = props
     const [form] = Form.useForm()
 
     const layout = {
         labelCol: { span: 5 }, //左侧label的宽度
         wrapperCol: { span: 18 }, //右侧input的宽度
     }
-    
+
     useEffect(() => {
         setUpateForm(form)
-    },[setUpateForm,form])
+    },[form, setUpateForm])
+    
+    useEffect(() => {
+        form.setFieldsValue(user)
+    },[form, user])
+
 
     return (
         <Form
@@ -22,7 +27,6 @@ function UpdateUser (props) {
         >
             <Form.Item name='username'
                        label="用户名:"
-                       initialValue={username}
                        rules={[
                            {required: true, message: '请输入用户名' },
                            {
@@ -38,7 +42,6 @@ function UpdateUser (props) {
             </Form.Item>
             <Form.Item name='phone'
                        label="手机号:"
-                       initialValue={phone}
                        rules={[
                            {required: true, message: '请输入手机号' },
                            {
@@ -50,7 +53,6 @@ function UpdateUser (props) {
             </Form.Item>
             <Form.Item name='email'
                        label="邮箱:"
-                       initialValue={email}
                        rules={[
                            {required: true, message: '请输入邮箱' },
                            {
@@ -62,7 +64,6 @@ function UpdateUser (props) {
             </Form.Item>
             <Form.Item name='role_id'
                        label="角色:"
-                       initialValue={role_id}
                        rules={[
                            {required: true, message: '请选择角色' }
                        ]}>
